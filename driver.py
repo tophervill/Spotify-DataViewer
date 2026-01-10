@@ -1,11 +1,13 @@
-from spotify_service import top_tracks, top_artists
+from spotify_service import top_tracks, top_artists, get_user_info
 
 # TODO: Add functionality to choose time range for top artists
 # TODO: Implement pagination for large lists of tracks/artists
 # TODO: Add unit tests for functions
 
+user = get_user_info()
+
 def main():
-    print("Welcome to Topher's Spotify API App!\n")
+    print(f"Hello, {user['display_name']}!\n")
     while True:
         print("==== Main Menu ====")
         print("1. View top tracks")
