@@ -1,4 +1,4 @@
-from spotify_client import sp_instance
+from spotify_service import top_tracks, top_artists
 
 # TODO: Add functionality to choose time range for top artists
 # TODO: Implement pagination for large lists of tracks/artists
@@ -37,32 +37,6 @@ def main():
             break
         else:
             print("Please enter a valid option.\n")
-
-def top_tracks(limit, time_range):
-    user = sp_instance()
-
-    print(f"Displaying top tracks from a {time_range} time range:\n")
-
-    time_range = time_range.lower() + "_term"
-
-    user_top_tracks = user.current_user_top_tracks(limit=limit, offset=0, time_range=time_range)
-
-    print("---------")
-    for idx, track in enumerate(user_top_tracks['items']):
-        print(f"{idx + 1}. {track['name']} by {', '.join([artist['name'] for artist in track['artists']])}")
-    print("---------")
-
-    print("\nEnding top tracks display.\n")
-
-# TODO: Implement the top_artists function to fetch and display user's top artists
-def top_artists():
-    pass
-
-def get_user_info():
-    spotify_instance = sp_instance()
-    user = spotify_instance.current_user()
-    return user
-
 
 if __name__ == "__main__":
     main()
