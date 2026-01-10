@@ -4,10 +4,11 @@ from spotify_service import top_tracks, top_artists, get_user_info
 # TODO: Implement pagination for large lists of tracks/artists
 # TODO: Add unit tests for functions
 
-user = get_user_info()
-
 def main():
+    user = get_user_info()
+
     print(f"Hello, {user['display_name']}!\n")
+    
     while True:
         print("==== Main Menu ====")
         print("1. View top tracks")
