@@ -1,13 +1,13 @@
 from spotify_client import sp_instance
 
 def top_tracks(limit, time_range):
-    user = sp_instance()
+    sp = sp_instance()
 
     print(f"Displaying top tracks from a {time_range} time range:\n")
 
     time_range = time_range.lower() + "_term"
 
-    user_top_tracks = user.current_user_top_tracks(limit=limit, offset=0, time_range=time_range)
+    user_top_tracks = sp.current_user_top_tracks(limit=limit, offset=0, time_range=time_range)
 
     print("---------")
     for idx, track in enumerate(user_top_tracks['items']):
