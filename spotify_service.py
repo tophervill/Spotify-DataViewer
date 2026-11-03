@@ -21,6 +21,22 @@ def top_artists():
     pass
 
 def get_user_info():
+    
+    # Checks for valid Spotify credentials and returns the current user's information
+    if not sp_instance():
+        raise Exception("Spotify credentials are invalid or missing. Please check your .env file.")
+    else:
+        print("Spotify credentials are valid. Fetching user information...\n")
+
+    # Checks if instance is valid or expired, and refreshes the token if necessary
+    if not sp_instance().auth_manager.is_token_expired(sp_instance().auth_manager.cache_handler.get_cached_token()):
+        print("Spotify token is valid. Fetching user information...\n")
+
+    else:
+        print("Spotify token is expired. Refreshing token...\n")
+
+    
     spotify_instance = sp_instance()
     user = spotify_instance.current_user()
+
     return user
