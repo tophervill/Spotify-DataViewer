@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Soundboard | Dashboard{% endblock %}
+{% block content %}
+<header class="topbar">
+    <a class="wordmark" href="{{ url_for('dashboard') }}"><span class="brand-mark brand-mark-small">S</span> soundboard</a>
+    <div class="topbar-actions">
+        {% if metrics and metrics.profile %}
+            <span class="welcome">Hi, {{ metrics.profile.display_name or 'there' }}</span>
+        {% endif %}
+        <a class="button button-quiet" href="{{ url_for('logout') }}">Log out</a>
+    </div>
+</header>
+<main class="dashboard-shell">
+    <section class="dashboard-intro">
+        <div>
+            <p class="eyebrow">Your personal listening snapshot</p>
+            <h1>A little more <em>you.</em></h1>
+            <p class="lede">The music you keep coming back to, gathered in one friendly place.</p>
+        </div>
+        <form class="range-picker" method="get" action="{{ url_for('dashboard') }}">
+            <label for="range">Listening over</label>
+            <select id="range" name="range" onchange="this.form.submit()">
+                <option value="short" {% if selected_range == 'short' %}selected{% endif %}>The last 4 weeks</option>
+                <option value="medium" {% if selected_range == 'medium' %}selected{% endif %}>The last 6 months</option>
+                <option value="long" {% if selected_range == 'long' %}selected{% endif %}>All time</option>
+            </select>
+        </form>
+    </section>
+
+    {% if metrics %}
+    <section class="metrics-grid" aria-label="Your overview">
+        <article class="metric metric-highlight"><span class="metric-label">Saved tracks</span><strong>{{ metrics.saved_track_count }}</strong><span class="metric-detail">in your library</span></article>
+        <article class="metric"><span class="metric-label">Playlists</span><strong>{{ metrics.playlist_count }}</strong><span class="metric-detail">ready to revisit</span></article>
+        <article class="metric metric-genres"><span class="metric-label">Your sound leans</span><div class="genre-list">{% for genre in metrics.top_genres %}<span>{{ genre }}</span>{% else %}<span>Still discovering</span>{% endfor %}</div></article>
+    </section>
+    {% endif %}
+
+    <section class="content-grid">
+        <article class="section-panel tracks-panel">
+            <div class="section-heading"><div><span class="section-kicker">01 / on repeat</span><h2>Top tracks</h2></div><span class="section-count">{{ tracks|length }}</span></div>
+            <div class="media-list">
+                {% for track in tracks %}
+                <a class="media-row" href="{{ track.url or '#' }}" {% if track.url %}target="_blank" rel="noreferrer"{% endif %}>
+                    <span class="media-position">{{ '%02d'|format(track.position) }}</span>
+                    {% if track.image %}<img class="media-art" src="{{ track.image }}" alt="Album art for {{ track.name }}">{% else %}<span class="media-art media-art-empty">S</span>{% endif %}
+                    <span class="media-copy"><strong>{{ track.name }}</strong><small>{{ track.artists }}</small></span><span class="media-arrow" aria-hidden="true">-&gt;</span>
+                </a>
+                {% else %}<p class="empty-state">No top tracks found for this range yet.</p>{% endfor %}
+            </div>
+        </article>
+        <article class="section-panel artists-panel">
+            <div class="section-heading"><div><span class="section-kicker">02 / familiar voices</span><h2>Top artists</h2></div><span class="section-count">{{ artists|length }}</span></div>
+            <div class="artist-list">
+                {% for artist in artists %}
+                <a class="artist-row" href="{{ artist.url or '#' }}" {% if artist.url %}target="_blank" rel="noreferrer"{% endif %}>
+                    <span class="media-position">{{ '%02d'|format(artist.position) }}</span>
+                    {% if artist.image %}<img class="artist-art" src="{{ artist.image }}" alt="{{ artist.name }}">{% else %}<span class="artist-art artist-art-empty">S</span>{% endif %}
+                    <span class="media-copy"><strong>{{ artist.name }}</strong><small>{{ artist.genres|join(', ') or 'Artist' }}</small></span>
+                </a>
+                {% else %}<p class="empty-state">No artist data found for this range yet.</p>{% endfor %}
+            </div>
+        </article>
+        <article class="section-panel soundtrack-panel">
+            <div class="section-heading"><div><span class="section-kicker">03 / kept close</span><h2>Your soundtracks</h2></div><span class="section-count">{{ soundtracks|length }}</span></div>
+            <p class="section-note">A glimpse at the saved tracks waiting in your library.</p>
+            <div class="soundtrack-strip">
+                {% for track in soundtracks[:4] %}<a href="{{ track.url or '#' }}" class="soundtrack-tile" {% if track.url %}target="_blank" rel="noreferrer"{% endif %}>{% if track.image %}<img src="{{ track.image }}" alt="Album art for {{ track.name }}">{% endif %}<strong>{{ track.name }}</strong><small>{{ track.artists }}</small></a>{% else %}<p class="empty-state">Your saved tracks will appear here.</p>{% endfor %}
+            </div>
+        </article>
+    </section>
+    <footer class="dashboard-footer"><span>Built from your Spotify listening history.</span><span>Keep listening to keep discovering.</span></footer>
+</main>
+{% endblock %}

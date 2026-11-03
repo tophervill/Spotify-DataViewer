@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Soundboard | Your listening, made clear{% endblock %}
+{% block content %}
+<main class="login-page">
+    <section class="login-panel" aria-labelledby="login-title">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <p class="eyebrow">A gentler way to browse your Spotify</p>
+        <h1 id="login-title">Your listening,<br><em>made clear.</em></h1>
+        <p class="lede">See the artists, tracks, and sounds that have been part of your days. Nothing to configure. Just connect Spotify and take a look around.</p>
+        <form action="{{ url_for('login') }}" method="post">
+            <label class="remember-choice"><input type="checkbox" name="remember" value="1"> Keep me signed in for 30 days</label>
+            <button class="button button-primary" type="submit">Connect Spotify <span aria-hidden="true">-&gt;</span></button>
+        </form>
+        <p class="privacy-note">You can leave anytime. We only use your Spotify data to build this private view.</p>
+    </section>
+    <aside class="login-preview" aria-label="Dashboard preview">
+        <div class="preview-orbit orbit-one"></div>
+        <div class="preview-orbit orbit-two"></div>
+        <div class="preview-card preview-card-main">
+            <span class="preview-label">YOUR CURRENT ROTATION</span>
+            <strong>Quiet mornings</strong>
+            <div class="preview-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="preview-caption">A small picture of a big habit.</span>
+        </div>
+        <div class="preview-card preview-card-note"><span>12</span><small>favorite<br>artists</small></div>
+    </aside>
+</main>
+{% endblock %}
