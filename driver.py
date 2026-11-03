@@ -33,7 +33,19 @@ def main():
             top_tracks(limit, time_range)
 
         elif response == "2":
-            top_artists()
+            limit = input("How many artists would you like to see? (default 10): \n> ")
+            if not limit.isdigit() or int(limit) <= 0:
+                limit = 10
+            else:
+                limit = int(limit)
+
+            time_range = input("Select time range - (short, medium, long) (default medium): \n> ")
+            if time_range not in ['short', 'medium', 'long']:
+                time_range = 'medium'
+
+            print(f"\nGot it! Fetching your top {limit} artists...\n")
+
+            top_artists(limit, time_range)
 
         elif response == "3":
             print("Closing program... Goodbye!")
